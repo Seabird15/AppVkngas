@@ -58,7 +58,7 @@ export const FormEvents = () => {
                     <button className='float-right' onClick={closeModal}>&#215;</button>
                     <h1 className='text-red-600'>Agendar Entrenamiento</h1>
                     <form onSubmit={handleSubmit}>
-                        <div className=''>
+                        <div className='flex flex-col'>
                             <label>Titulo</label>
                             <input type="text" className='bg-slate-200 rounded-3' name='tituloEvent' id='tituloEvent' value={evento.tituloEvent} onChange={handleChange} />
                             <label>Lugar</label>
@@ -67,7 +67,7 @@ export const FormEvents = () => {
                             <input type="datetime-local" className='bg-slate-200 rounded-3' name='fechaEvent' id='fechaEvent' value={evento.fechaEvent} onChange={handleChange} />
                             <label>Comentarios</label>
                             <textarea className='bg-slate-200 rounded-3' cols="20" rows="5" name='descrEvent' id="descrEvent" value={evento.descrEvent} onChange={handleChange}></textarea>
-                            <button type='submit' className='p-2 bg-green-400 rounded-md shadow-lg' onClick={handleSubmit}>Agendar</button>
+                            <button type='submit' className='p-2 mt-4 bg-green-400 rounded-md shadow-lg' onClick={handleSubmit}>Agendar</button>
                         </div>
                     </form>
                 </div>
