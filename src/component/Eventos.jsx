@@ -4,9 +4,11 @@ import { db } from "../firebase";
 import { format, getDay } from 'date-fns';
 import { es } from 'date-fns/locale'
 
+import { Entrenos } from "./Entrenos";
 
 export const Eventos = () => {
     const [eventos, setEventos] = useState([]);
+    const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
 
     const fetchEventos = async () => {
         try {
@@ -26,13 +28,16 @@ export const Eventos = () => {
         fetchEventos();
     }, [])
 
-    //Formatear fecha 
     const formatDate = (fecha) => {
         const date = new Date(fecha);
-        const dayName = format(date, 'EEEE', { locale: es }); // Obtener el nombre del día
-        const formattedDate = format(date, 'dd/MM/yyyy'); // Formatear la fecha
-        const hour = format(date, 'HH:mm'); // Obtener la hora
+        const dayName = format(date, 'EEEE', { locale: es });
+        const formattedDate = format(date, 'dd/MM/yyyy');
+        const hour = format(date, 'HH:mm');
         return `${dayName}, ${formattedDate} - ${hour}`;
+    };
+
+    const handleEventoClick = (evento) => {
+        setEventoSeleccionado(evento);
     };
 
     return (
@@ -48,11 +53,13 @@ export const Eventos = () => {
                     <p>{formatDate(evento.fechaEvent)}</p>
                     <label className="font-bold">Detalles</label>
                     <p>{evento.descrEvent}</p>
-                    <button className="p-2 border rounded-md shadow-md bg-amber-400">Ir</button>
-
+                    <Entrenos
+                        eventoSeleccionado={eventoSeleccionado}
+                        handleEventoClick={handleEventoClick}
+                        evento={evento} // Pasa el evento actual como prop al componente Entrenos
+                    />
                 </div>
-
             ))}
         </div>
-    )
+    );
 }

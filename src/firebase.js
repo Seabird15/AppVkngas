@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import {v4} from 'uuid'
 import 'firebase/firestore'
-import { getFirestore, collection, addDoc } from 'firebase/firestore' // Importa getFirestore
+import { getFirestore, collection, addDoc, getDoc } from 'firebase/firestore' // Importa getFirestore
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
