@@ -1,10 +1,9 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import {v4} from 'uuid'
-import 'firebase/firestore'
-import { getFirestore, collection, addDoc, getDoc } from 'firebase/firestore' // Importa getFirestore
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,14 +21,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app)
-export const storage = getStorage(app)
+export const auth = getAuth(app);
+export const storage = getStorage(app);
+export const db = getFirestore(app);
+export { collection }
 
-export async function uploadFile (file) {
-  const storageRef = ref(storage, v4())
-  await uploadBytes(storageRef, file)
-  const url = await getDownloadURL(storageRef)
-  return url
+export async function uploadFile(file) {
+  const storageRef = ref(storage, v4());
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 }
 
-export const db = getFirestore(app);
+export async function agregarEncuesta(encuestaData) {
+  try {
+    await addDoc(collection(db, 'encuestas'), {
+      ...encuestaData,
+      timestamp: new Date(),
+    });
+    console.log('Encuesta agregada exitosamente');
+  } catch (error) {
+    console.error('Error al agregar la encuesta:', error);
+  }
+}
