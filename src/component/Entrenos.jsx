@@ -1,6 +1,5 @@
 import { addDoc, collection, serverTimestamp, doc, getDoc, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase";
-
 import { useEffect, useState } from "react";
 import ModalComponent from './Modal'
 
@@ -13,6 +12,7 @@ export const Entrenos = ({ eventoSeleccionado, handleEventoClick, evento }) => {
         if (eventoSeleccionado) {
             console.log("ID del evento seleccionado:", eventoSeleccionado.id);
             fetchAsistentes();
+            fetchNoAsistentes();
         }
     }, [eventoSeleccionado]);
 
@@ -90,7 +90,7 @@ export const Entrenos = ({ eventoSeleccionado, handleEventoClick, evento }) => {
     const darseDeBaja = async () => {
         try {
             const usuario = auth.currentUser;
-            const nombreUsuario = usuario.displayName || "NombreUsuario";
+            const nombreUsuario = usuario.displayName || usuario.email;
             const eventoDocRef = doc(db, "eventos", eventoSeleccionado.id);
             const noAsistenCollectionRef = collection(
                 eventoDocRef,
@@ -142,23 +142,23 @@ export const Entrenos = ({ eventoSeleccionado, handleEventoClick, evento }) => {
                             {/* Mostrar otros detalles del evento */}
                         </div>
                     )}
-                    <div className="flex gap-2 mt-6 text-left ">
-                        <button className="bg-green-400 rounded-md shadow-md" onClick={confirmarAsistencia}>
+                    <div className="flex justify-center gap-2 mt-6 text-left">
+                        <button className="px-1 text-xs text-white bg-green-400 rounded-md shadow-md" onClick={confirmarAsistencia}>
                             Confirmar asistencia
                         </button>
-                        <button className="bg-red-600 rounded-md shadow-md" onClick={darseDeBaja}>
+                        <button className="px-2 text-xs text-white bg-red-600 rounded-md shadow-md" onClick={darseDeBaja}>
                             Darse de baja
                         </button>
                     </div>
-                    <div className="mt-4">
-                        <p>Asistentes:</p>
+                    <div className="p-2 mt-4 text-xs border rounded-2xl">
+                        <p className="font-bold">Asistentes:</p>
                         {asistentes.map((asistente, index) => (
                             <p key={index}>{asistente || obtenerCorreo(asistente)}</p>
                         ))}
                     </div>
 
-                    <div className="mt-4">
-                        <p>No asistente:</p>
+                    <div className="p-2 mt-4 text-xs border rounded-2xl">
+                        <p className="font-bold">No asistente:</p>
                         {noAsisten.map((nombre, index) => (
                             <p key={index}>{nombre}</p>
                         ))}

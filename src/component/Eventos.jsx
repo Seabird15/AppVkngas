@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { format, getDay } from 'date-fns';
 import { es } from 'date-fns/locale'
+import { BiCalendar, BiEditAlt, } from "react-icons/bi";
+
 
 import { Entrenos } from "./Entrenos";
 
@@ -41,25 +43,29 @@ export const Eventos = () => {
     };
 
     return (
-        <div>
-            <h4 className="my-2 text-center">Próximos Eventos</h4>
-            {eventos.map((evento) => (
-                <div key={evento.id} className="p-2 m-2 border">
-                    <label className="font-bold">Actividad</label>
-                    <h2>{evento.tituloEvent}</h2>
-                    <label className="font-bold">Lugar</label>
-                    <p>{evento.lugarEvent}</p>
-                    <label className="font-bold">Fecha</label>
-                    <p>{formatDate(evento.fechaEvent)}</p>
-                    <label className="font-bold">Detalles</label>
-                    <p>{evento.descrEvent}</p>
-                    <Entrenos
-                        eventoSeleccionado={eventoSeleccionado}
-                        handleEventoClick={handleEventoClick}
-                        evento={evento} // Pasa el evento actual como prop al componente Entrenos
-                    />
-                </div>
-            ))}
-        </div>
+        <>
+            <span className="flex justify-center mt-2"><BiCalendar /></span>
+            <h4 className="my-2 font-semibold text-center ">Próximos Eventos:</h4>
+
+            <div className="grid grid-cols-1 md:grid md:grid-cols-3">
+                {eventos.map((evento) => (
+                    <div key={evento.id} className="p-2 m-2 text-xs bg-white border rounded-sm shadow-md ">
+                        <label className="font-bold">Actividad</label>
+                        <h2>{evento.tituloEvent}</h2>
+                        <label className="font-bold">Lugar</label>
+                        <p>{evento.lugarEvent}</p>
+                        <label className="font-bold">Fecha</label>
+                        <p>{formatDate(evento.fechaEvent)}</p>
+                        <label className="font-bold">Detalles</label>
+                        <p>{evento.descrEvent}</p>
+                        <Entrenos
+                            eventoSeleccionado={eventoSeleccionado}
+                            handleEventoClick={handleEventoClick}
+                            evento={evento} // Pasa el evento actual como prop al componente Entrenos
+                        />
+                    </div>
+                ))}
+            </div>
+        </>
     );
 }
