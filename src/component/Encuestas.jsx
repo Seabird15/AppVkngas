@@ -12,6 +12,9 @@ export const Encuestas = () => {
     const [titulo, setTitulo] = useState('');
     const [descripcion, setDescripcion] = useState('');
 
+    const [opciones, setOpciones] = useState([]); // Estado para las opciones de la encuesta
+    const [nuevaOpcion, setNuevaOpcion] = useState(''); // Estado para la nueva opción ingresada
+
     const closeModal = () => {
         setMostrarModal(false)
     }
@@ -21,15 +24,37 @@ export const Encuestas = () => {
             await agregarEncuesta({
                 titulo,
                 descripcion,
+                opciones,
             });
 
             // Limpiar los campos del formulario
             setTitulo('');
             setDescripcion('');
+            setOpciones([]);
             // Cerrar el modal
             setMostrarModal(false);
         } catch (error) {
             console.error('Error al agregar la encuesta', error);
+        }
+    };
+
+    //Funcion para agregar opciones
+    const agregarOpcion = () => {
+        if (nuevaOpcion.trim() !== '') {
+            setOpciones([...opciones, nuevaOpcion]);
+            setNuevaOpcion('');
+        }
+    }
+
+    const handleVotar = async (encuestaId, opcionIndex) => {
+        try {
+            const encuestaDocRef = doc(db, 'encuestas', encuestaId);
+            await updateDoc(encuestaDocRef, {
+                [`opciones.${opcionIndex}.votos`]: increment(1),
+            });
+            console.log('Voto registrado exitosamente');
+        } catch (error) {
+            console.error('Error al registrar el voto:', error);
         }
     };
 
@@ -62,6 +87,26 @@ export const Encuestas = () => {
                                 value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}
                             ></textarea>
+                            <input
+                                type="text"
+                                className='shadow-sm'
+                                placeholder='Agregar opción'
+                                value={nuevaOpcion}
+                                onChange={(e) => setNuevaOpcion(e.target.value)} />
+                            <button
+                                type="button"
+                                className='p-1 bg-green-200 rounded-full shadow-md'
+                                onClick={agregarOpcion}
+                            >
+                                Agregar opción
+                            </button>
+
+
+
+                            {/* Mostrar las opciones ingresadas */}
+                            {opciones.map((opcion, index) => (
+                                <div key={index}>{opcion}</div>
+                            ))}
                             <button type="button" className='p-1 bg-green-200 rounded-full shadow-md' onClick={handleAgregarEncuesta}>
                                 Guardar Encuesta
                             </button>
@@ -72,11 +117,15 @@ export const Encuestas = () => {
                 {/* Listado de encuestas */}
                 {encuestas &&
                     encuestas.map((encuesta) => (
-                        <div key={encuesta.id}>
+                        <div className='m-2 bg-white' key={encuesta.id}>
                             <h3>{encuesta.titulo}</h3>
                             <p>{encuesta.descripcion}</p>
+                            <p>{encuesta.opciones}</p>
+
                         </div>
                     ))}
+
+
             </div>
             <StickyBar />
         </>

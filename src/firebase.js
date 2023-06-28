@@ -37,6 +37,7 @@ export async function agregarEncuesta(encuestaData) {
   try {
     await addDoc(collection(db, 'encuestas'), {
       ...encuestaData,
+      opciones: [],
       timestamp: new Date(),
     });
     console.log('Encuesta agregada exitosamente');
