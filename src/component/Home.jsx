@@ -10,6 +10,7 @@ import { StickyBar } from './StickyBar'
 
 
 
+
 export const Home = () => {
 
 
@@ -46,7 +47,7 @@ export const Home = () => {
 
   return (
     <>
-      <div className='w-full max-w-xs m-auto text-black md:max-w-4xl'>
+      <div className='w-full h-auto max-w-xs m-auto text-black md:max-w-4xl'>
         <div className=''>
           <div className='p-3 mb-5 border rounded-sm '>
             <h1 className='mb-4 text-center text-md'>Hola! {user.displayName || user.email} </h1>
@@ -72,9 +73,9 @@ export const Home = () => {
           </div>
 
         </div>
-
       </div>
       <StickyBar />
+
     </>
 
   )
